@@ -94,7 +94,7 @@ void drm_flush(lv_disp_drv_t *disp_drv, const lv_area_t *area, lv_color_t *color
 
 	lv_coord_t w = (area->x2 - area->x1 + 1);
 	lv_coord_t h = (area->y2 - area->y1 + 1);
-	int i, y;
+	int i, y, x = 0;
 
 	dbg("drm_flush() x %d:%d y %d:%d w %d h %d", area->x1, area->x2, area->y1, area->y2, w, h);
 
@@ -110,12 +110,27 @@ void drm_flush(lv_disp_drv_t *disp_drv, const lv_area_t *area, lv_color_t *color
 		return;
 	}
 
-	for (y = 0, i = area->y1 ; i <= area->y2 ; ++i, ++y) {
-		memcpy(
-			(uint8_t *)dev->map + (area->x1 * (LV_COLOR_SIZE/8)) + (dev->stride * i),
-			(uint8_t *)color_p + (w * (LV_COLOR_SIZE/8) * y),
-			w * (LV_COLOR_SIZE/8)
-		);
+	// XXX shouldn't DRM handle rotation??
+	if (disp_drv->rotated == 0) {
+		for (y = 0, i = area->y1 ; i <= area->y2 ; ++i, ++y) {
+			memcpy(
+				(uint8_t *)dev->map + (area->x1 * (LV_COLOR_SIZE/8)) + (dev->stride * i),
+				(uint8_t *)color_p + (w * (LV_COLOR_SIZE/8) * y),
+				w * (LV_COLOR_SIZE/8)
+			);
+		}
+	}
+	else {
+		int off = 0;
+		//      x/y → drm coords    (panel native)
+		// area x/y → lvgui coords  (rotated)
+		for (y = area->y1; y <= area->y2 && y < disp_drv->ver_res; y++) {
+			for (x = area->x1; x <= area->x2; x++) {
+				off = dev->stride * x + (disp_drv->hor_res - y) * 4;
+				*(uint32_t*)&dev->map[off] = lv_color_to32(*color_p);
+				color_p++;
+			}
+		}
 	}
 
 	// This normally is used with double-buffering, where we would flip to
@@ -166,6 +181,10 @@ void drm_init(lv_disp_drv_t* drv)
 
 	drv->hor_res = modeset_list->width;
 	drv->ver_res = modeset_list->height;
+// FIXME: detect rotation
+#if 1
+	drv->rotated = 1;
+#endif
 
 	goto ok;
 	goto err;
