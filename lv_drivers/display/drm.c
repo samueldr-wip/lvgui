@@ -105,9 +105,17 @@ void drm_flush(lv_disp_drv_t *disp_drv, const lv_area_t *area, lv_color_t *color
 	(int) h; // temporary until ^ is added back...
 
 	// Just in case, this is most likely a BUG in this driver.
-	if (area->y2 > modeset_list->height) {
-		err("drm_flush() too large to fit in buffer!!!! [BUG!!]");
-		return;
+	if (disp_drv->rotated == 0) {
+		if (area->y2 > modeset_list->height) {
+			err("drm_flush() too large to fit in buffer!!!! [BUG!!]");
+			return;
+		}
+	}
+	else {
+		if (area->y2 > modeset_list->width) {
+			err("drm_flush() too large to fit in buffer!!!! [BUG!!]");
+			return;
+		}
 	}
 
 	// XXX shouldn't DRM handle rotation??
