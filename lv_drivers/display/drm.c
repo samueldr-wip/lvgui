@@ -124,7 +124,7 @@ void drm_flush(lv_disp_drv_t *disp_drv, const lv_area_t *area, lv_color_t *color
 		int off = 0;
 		//      x/y → drm coords    (panel native)
 		// area x/y → lvgui coords  (rotated)
-		for (y = area->y1; y <= area->y2 && y < disp_drv->ver_res; y++) {
+		for (y = area->y1; y <= area->y2 && y < disp_drv->hor_res; y++) {
 			for (x = area->x1; x <= area->x2; x++) {
 				off = dev->stride * x + (disp_drv->hor_res - y) * 4;
 				*(uint32_t*)&dev->map[off] = lv_color_to32(*color_p);
