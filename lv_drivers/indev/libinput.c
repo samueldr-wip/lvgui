@@ -212,8 +212,14 @@ bool libinput_read(lv_indev_drv_t * drv, lv_indev_data_t * data)
 			case LIBINPUT_EVENT_TOUCH_MOTION:
 			case LIBINPUT_EVENT_TOUCH_DOWN:
 				touch_event = libinput_event_get_touch_event(event);
+// XXX: conditionally on display being rotated...
+#if 0
 				instance->root_x = libinput_event_touch_get_x_transformed(touch_event, LV_HOR_RES);
 				instance->root_y = libinput_event_touch_get_y_transformed(touch_event, LV_VER_RES);
+#else
+				instance->root_y = LV_VER_RES - libinput_event_touch_get_x_transformed(touch_event, LV_VER_RES);
+				instance->root_x = libinput_event_touch_get_y_transformed(touch_event, LV_HOR_RES);
+#endif
 				instance->state = LV_INDEV_STATE_PR;
 				break;
 
@@ -224,8 +230,14 @@ bool libinput_read(lv_indev_drv_t * drv, lv_indev_data_t * data)
 			// Stylus hovering, or "drawing tablet", like QEMU
 			case LIBINPUT_EVENT_POINTER_MOTION_ABSOLUTE:
 				pointer_event = libinput_event_get_pointer_event(event);
+// XXX: conditionally on display being rotated...
+#if 0
 				instance->root_x = libinput_event_pointer_get_absolute_x_transformed(pointer_event, LV_HOR_RES);
 				instance->root_y = libinput_event_pointer_get_absolute_y_transformed(pointer_event, LV_VER_RES);
+#else
+				instance->root_y = LV_VER_RES - libinput_event_pointer_get_absolute_x_transformed(pointer_event, LV_VER_RES);
+				instance->root_x = libinput_event_pointer_get_absolute_y_transformed(pointer_event, LV_HOR_RES);
+#endif
 				break;
 
 			case LIBINPUT_EVENT_POINTER_MOTION:
