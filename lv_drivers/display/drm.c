@@ -272,6 +272,10 @@ void drm_init(lv_disp_drv_t* drv)
 		drv->rotated = 1;
 	}
 
+	if (drmDropMaster(dev->fd) != 0) {
+		info("Could not drop master...");
+	}
+
 	goto ok;
 	goto err;
 
