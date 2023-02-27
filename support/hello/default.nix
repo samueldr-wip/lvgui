@@ -45,4 +45,6 @@ stdenv.mkDerivation {
     mkdir -vp $out/share/lvgui-hello
     cp -v -t $out/share/lvgui-hello hello.svg
   '';
+
+  enableParallelBuilding = true;
 }
