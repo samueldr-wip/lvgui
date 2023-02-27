@@ -521,6 +521,11 @@ static void kb_init(void)
     bg.body.main_color = COLOR_BLUE_DARK2;
     bg.body.grad_color = bg.body.main_color;
     bg.body.border.width = 0;
+    bg.body.padding.bottom = PIXEL_SCALE(4);
+    bg.body.padding.top    = PIXEL_SCALE(4);
+    bg.body.padding.left   = PIXEL_SCALE(4);
+    bg.body.padding.right  = PIXEL_SCALE(4);
+    bg.body.padding.inner  = PIXEL_SCALE(4);
 
     static lv_style_t rel;
     lv_style_copy(&rel, &lv_style_transp);
