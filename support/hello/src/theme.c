@@ -496,11 +496,31 @@ static void kb_init(void)
 {
 #if LV_USE_KB
 
+    static lv_style_t bg;
+    lv_style_copy(&bg, theme.style.panel);
+
+    bg.body.main_color = lv_color_hsv_to_rgb(_hue + 14, 100, 30);
+    bg.body.grad_color = bg.body.main_color;
+    bg.body.border.width = 0;
+    bg.body.padding.bottom = PIXEL_SCALE(4);
+    bg.body.padding.top    = PIXEL_SCALE(4);
+    bg.body.padding.left   = PIXEL_SCALE(4);
+    bg.body.padding.right  = PIXEL_SCALE(4);
+    bg.body.padding.inner  = PIXEL_SCALE(4);
+
     static lv_style_t rel;
     lv_style_copy(&rel, &lv_style_transp);
-    rel.text.font = _font;
+    rel.body.radius     = PIXEL_SCALE(2);
+    rel.body.opa        = LV_OPA_COVER;
+    rel.body.main_color = lv_color_hsv_to_rgb(_hue, 100, 56);
+    rel.body.border.width   = PIXEL_SCALE(0);
+    rel.body.border.color   = lv_color_hsv_to_rgb(_hue, 80, 33);
+    rel.body.border.opa     = LV_OPA_COVER;
+    rel.body.grad_color = rel.body.main_color;
+    rel.text.color  = lv_color_hex(0xFFAB0D);
+    // rel.text.font = _font;
 
-    theme.style.kb.bg          = theme.style.btnm.bg;
+    theme.style.kb.bg          = &bg;
     theme.style.kb.btn.rel     = &rel;
     theme.style.kb.btn.pr      = theme.style.btnm.btn.pr;
     theme.style.kb.btn.tgl_rel = theme.style.btnm.btn.tgl_rel;
@@ -523,17 +543,25 @@ static void ta_init(void)
 {
 #if LV_USE_TA
     static lv_style_t oneline;
+    static lv_style_t bg;
+    lv_style_copy(&bg, theme.style.panel);
+
+    bg.body.opa        = LV_OPA_COVER;
+    bg.body.main_color = lv_color_mix(lv_color_hsv_to_rgb(_hue, 100, 100), lv_color_hex(0x000000), LV_OPA_30);
+    bg.body.grad_color = bg.body.main_color;
+    bg.body.border.width   = PIXEL_SCALE(2);
+    bg.body.border.color   = lv_color_hsv_to_rgb(_hue, 77, 96);
+    bg.body.border.opa     = LV_OPA_COVER;
+    bg.body.radius   = PIXEL_SCALE(5);
 
     lv_style_copy(&oneline, &def);
     oneline.body.opa          = LV_OPA_TRANSP;
-    oneline.body.radius       = 0;
-    oneline.body.border.part  = LV_BORDER_BOTTOM;
-    oneline.body.border.width = 3;
-    oneline.body.border.color = lv_color_hex3(0x333);
+    oneline.body.radius       = PIXEL_SCALE(2);
+    oneline.body.border.width = 0;
     oneline.body.border.opa   = LV_OPA_COVER;
     oneline.text.color        = DEF_COLOR_TEXT;
 
-    theme.style.ta.area    = theme.style.panel;
+    theme.style.ta.area    = &bg;
     theme.style.ta.oneline = &oneline;
     theme.style.ta.cursor  = NULL; /*Let library to calculate the cursor's style*/
     theme.style.ta.sb      = &sb;
