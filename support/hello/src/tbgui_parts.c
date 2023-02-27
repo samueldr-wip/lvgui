@@ -99,9 +99,9 @@ window_t* create_window(char* title_text)
 	char* logo_path = calloc(PATH_MAX, sizeof(char));
 	sprintf(
 		logo_path,
-		"%s?width=%d",
+		"%s?height=%d",
 		hal_asset_path("hello.svg"),
-		lv_obj_get_width_fit(top_container)
+		PIXEL_SCALE(64)
 	);
 	lv_img_set_src(logo, logo_path);
 	free(logo_path);
