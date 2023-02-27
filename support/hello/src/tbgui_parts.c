@@ -41,10 +41,12 @@ lv_obj_t* add_container(lv_obj_t* parent, bool transp)
 		lv_cont_set_style(container, LV_CONT_STYLE_MAIN, &container_style);
 	}
 	int width = lv_obj_get_width_fit(parent);
+#if 0
 	if (width > lv_obj_get_height_fit(parent)) {
 		//width = lv_obj_get_height_fit(parent);
 		width = lv_obj_get_height_fit(parent) * 9 / 16;
 	}
+#endif
 	lv_obj_set_width(container, width);
 
 	return container;
@@ -68,10 +70,12 @@ lv_obj_t* add_page(lv_obj_t* parent, bool transp)
 		lv_page_set_style(page, LV_PAGE_STYLE_BG, &page_style);
 	}
 	int width = lv_obj_get_width_fit(parent);
+#if 0
 	if (width > lv_obj_get_height_fit(parent)) {
 		//width = lv_obj_get_height_fit(parent);
 		width = lv_obj_get_height_fit(parent) * 9 / 16;
 	}
+#endif
 	lv_obj_set_width(page, width);
 
 	return page;
