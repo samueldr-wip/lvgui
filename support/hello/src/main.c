@@ -4,6 +4,7 @@
 #include <hal.h>
 #include <scale.h>
 #include <lv_lib_freetype/lv_freetype.h>
+#include <lv_lib_bmp/lv_bmp.h>
 #include <lv_lib_nanosvg/lv_nanosvg.h>
 
 #include "theme.h"
@@ -66,6 +67,7 @@ void tbgui_app_init()
 
 	hal_init(HELLO_ASSETS_PATH);
 	font_init();
+	lv_bmp_init();
 	lv_nanosvg_init();
 	lv_anim_core_init();
 	tbgui_theme_default();
