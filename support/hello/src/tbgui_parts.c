@@ -95,16 +95,61 @@ window_t* create_window(char* title_text)
 	lv_cont_set_fit2(main_container, LV_FIT_NONE, LV_FIT_NONE);
 	lv_obj_t * actions_container = add_container(container, true);
 
+#if 1
 	lv_obj_t * logo = lv_img_create(top_container, NULL);
 	char* logo_path = calloc(PATH_MAX, sizeof(char));
 	sprintf(
 		logo_path,
 		"%s?width=%d",
-		hal_asset_path("hello.svg"),
+		"hello.svg",
 		lv_obj_get_width_fit(top_container)
 	);
 	lv_img_set_src(logo, logo_path);
 	free(logo_path);
+#endif
+
+#if 1
+	lv_obj_t * bmp_test = lv_img_create(top_container, NULL);
+	lv_img_set_src(bmp_test, "./test.bmp");
+#endif
+
+#if 1
+	const int WIDTH = 128;
+	const int HEIGHT = 64;
+
+	lv_obj_t * temp_canvas = lv_canvas_create(top_container, NULL);
+	void * temp_buf = lv_img_buf_alloc(WIDTH, HEIGHT, LV_IMG_CF_TRUE_COLOR);
+	lv_canvas_set_buffer(temp_canvas, temp_buf, WIDTH, HEIGHT, LV_IMG_CF_TRUE_COLOR);
+	lv_canvas_draw_img(temp_canvas, 0, 0, "./test.bmp", &lv_style_transp_fit);
+	
+	lv_obj_t * canvas = lv_canvas_create(top_container, NULL);
+
+#if 0
+	void * buf = lv_img_buf_alloc(WIDTH, HEIGHT, LV_IMG_CF_TRUE_COLOR);
+	lv_canvas_set_buffer(canvas, buf, WIDTH, HEIGHT, LV_IMG_CF_TRUE_COLOR);
+	lv_canvas_fill_bg(canvas, lv_color_hex(0x00FF00));
+
+#if 0
+	lv_canvas_rotate(canvas, lv_canvas_get_img(temp_canvas), 0, 0, 0, 0, 0);
+#else
+	lv_canvas_rotate(canvas, lv_canvas_get_img(temp_canvas), 180, 0, 0, 0, 0);
+#endif
+
+#else
+	void * buf = lv_img_buf_alloc(HEIGHT, WIDTH, LV_IMG_CF_TRUE_COLOR);
+	lv_canvas_set_buffer(canvas, buf, HEIGHT, WIDTH, LV_IMG_CF_TRUE_COLOR);
+	lv_canvas_fill_bg(canvas, lv_color_hex(0x00FF00));
+
+#if 0
+	lv_canvas_rotate(canvas, lv_canvas_get_img(temp_canvas), 90, 0, 0, 0, 0);
+#else
+	lv_canvas_rotate(canvas, lv_canvas_get_img(temp_canvas), 270, 0, 0, 0, 0);
+#endif
+#endif
+
+
+	lv_obj_del(temp_canvas);
+#endif
 
 #if 0
 	lv_obj_t * title = lv_label_create(top_container, NULL);

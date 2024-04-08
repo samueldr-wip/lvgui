@@ -43,6 +43,6 @@ stdenv.mkDerivation {
 
   postInstall = ''
     mkdir -vp $out/share/lvgui-hello
-    cp -v -t $out/share/lvgui-hello hello.svg
+    cp -v -t $out/share/lvgui-hello *.svg *.bmp *.png
   '';
 }
